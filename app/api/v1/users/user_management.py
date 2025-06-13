@@ -1,8 +1,6 @@
 
-from typing import Annotated
-from fastapi import APIRouter, Depends, Header, Request
+from fastapi import APIRouter, Depends, Request
 from fastapi.responses import JSONResponse
-from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 
 from app.common.auth.token import authenticate, create_auth_token, verify_token
 from app.connectors.db.sqlite import SessionDep
