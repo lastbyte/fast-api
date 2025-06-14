@@ -6,8 +6,9 @@ from app.common.logger import Logger
 from app.connectors.cache.redis import get_redis_connector
 from app.exceptions.database_exceptions import EntityExists
 from app.models.requests.schema import CreateUserRequest, LoginRequest
-from app.models.db.user import User
+from app.models.db.schema import User
 from app.common.constants import UserStatus
+from app.services import user_role_service
 
 logger = Logger(__name__)
 
@@ -115,3 +116,22 @@ async def logout(token : str):
     except Exception as ex:
         logger.error(f"error occurred while logging out user : {str(ex)}")
         return False
+    
+
+async def update_user_role(db: Session, user_id: int, role_id: int):
+    try:
+        user = await get_user(db=db, user_id=user_id)
+        if not user:
+            raise Exception(f"User with id {user_id} not found")
+
+        user_role = await user_role_service.get_user_role(db=db, user_role_id=role_id)
+        if not user_role:
+            raise Exception(f"Role with id {role_id} not found")
+        
+        user.role_id = role_id
+        db.add(user)
+        db.commit()
+        db.refresh(user)
+        return user
+    except Exception:
+        raise Exception("Exception occurred while updating user role")

@@ -2,12 +2,12 @@
 from fastapi import APIRouter, Depends, Request
 from fastapi.responses import JSONResponse
 
-from app.common.auth.token import authenticate, create_auth_token, get_token, verify_token
+from app.common.auth.token import authenticate, create_auth_token, get_token, validate_permissions, verify_token
 from app.connectors.db.postgres import SessionDep
 from app.exceptions.database_exceptions import EntityExists
 from app.models.requests.schema import CreateUserRequest, LoginRequest
 from app.models.responses.users import InvalidUserRequest
-from app.models.db.user import User
+from app.models.db.schema import User
 from app.services import user_service
 from app.common.logger import Logger
 
@@ -93,6 +93,20 @@ async def get_self_user_profile(db: SessionDep,request: Request, token = Depends
 async def get_user_profile(db: SessionDep,user_id: int, token = Depends(verify_token)):
     try:
         user_data = await user_service.get_user(db=db, user_id=user_id)
+        return JSONResponse(
+            content=user_data.model_dump(),
+            status_code=200
+        )
+    except Exception as ex:
+        logger.error(f"Error occurred while fetching user")
+        raise ex
+
+@router.put("/{user_id}/update-role/{role_id}")
+@authenticate
+@validate_permissions(allowed_permissions=[1])
+async def update_user_role(db: SessionDep, request: Request, user_id: int, role_id: int, token = Depends(get_token)):
+    try:
+        user_data = await user_service.update_user_role(db=db, user_id=user_id, role_id=role_id)
         return JSONResponse(
             content=user_data.model_dump(),
             status_code=200

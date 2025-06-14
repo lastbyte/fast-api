@@ -1,6 +1,6 @@
 from sqlmodel import Session,select
 from app.connectors.db.postgres import SessionDep
-from app.models.db.user import UserRole
+from app.models.db.schema import UserRole
 from datetime import datetime
 from app.models.requests.schema import CreateUserRoleRequest
 
