@@ -1,11 +1,10 @@
-from fastapi import Depends, FastAPI
+from fastapi import FastAPI
 from app.api.main import add_api_routes
 from app.common.constants import APP_NAME, APP_DESCRIPTION
 from app.common.logger import Logger
-from app.connectors.db.sqlite import create_db_and_tables
-from app.connectors.db.postgres import SessionDep, create_db_and_tables as pg_create_db_and_tables
+from app.connectors.db.postgres import create_db_and_tables
 from app.middlewares.rate_limiter import RateLimiterMiddleware
-from app.common.configuration import config
+
 
 logger = Logger(__name__);
 
@@ -29,10 +28,7 @@ def configure_app(app: FastAPI):
 def configure_database(app : FastAPI):
     @app.on_event("startup")
     def on_startup():
-        if config.APP_ENV == 'demo':
-            create_db_and_tables()
-        else:
-            pg_create_db_and_tables()
+        create_db_and_tables()
     return app
     
 def configure_routers(app: FastAPI):

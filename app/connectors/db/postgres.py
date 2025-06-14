@@ -1,9 +1,8 @@
-# Code above omitted 👆
 from typing import Annotated
 from fastapi import Depends
 from sqlmodel import SQLModel, Session,create_engine
 from app.common.configuration import config
-from datetime import datetime
+
 
 from app.common.logger import Logger
 from app.connectors.db.seeders import seed_user_roles, seed_users
@@ -22,9 +21,6 @@ SessionDep = Annotated[Session, Depends(get_session)]
 
 
 def create_db_and_tables():
-    logger.info("dropping database")
-    SQLModel.metadata.drop_all(engine)
-
     logger.info("creating database")
     SQLModel.metadata.create_all(engine)
     
