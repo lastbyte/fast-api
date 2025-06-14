@@ -1,7 +1,6 @@
 from datetime import datetime
 from sqlmodel import Session
-from app.models.db.user import User
-from app.models.db.user_role import UserRole
+from app.models.db.user import User, UserRole
 from app.common.logger import Logger
 
 logger = Logger(__name__)

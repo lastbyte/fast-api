@@ -1,10 +1,19 @@
 import time
 from app.models.db.base import BaseModel
 from sqlmodel import Field, Relationship
-from typing import Optional
+from typing import List, Optional
 
 from app.common.constants import UserStatus
-from app.models.db.user_role import UserRole
+
+
+class UserRole(BaseModel, table=True):
+    __tablename__ = "user_roles"
+
+    role_name: str = Field(nullable=False)
+
+    class Config:
+        from_attributes = True
+
 
 
 class User(BaseModel, table=True):
@@ -18,17 +27,8 @@ class User(BaseModel, table=True):
     password : str | None = Field(default=None, nullable=False, exclude=True)
     status: UserStatus | None = Field(default=UserStatus.CREATED, nullable=False)
     role_id: Optional[int] = Field(default=None, foreign_key="user_roles.id", nullable=False)
-    role: Optional[UserRole] = Relationship(back_populates="users", sa_relationship_kwargs={"lazy": "selectin"})
 
-    @classmethod
-    def get_user_by_email(cls, email: str):
-        return cls.query.filter(cls.email == email).first()
+    class Config:
+        from_attributes = True
     
-    @classmethod
-    def get_user_by_id(cls, id: int):
-        return cls.query.filter(cls.id == id).first()
-    
-    @classmethod
-    def get_users_by_role(cls, role: str):
-        return cls.query.filter(cls.role.role_name == role).all()
 

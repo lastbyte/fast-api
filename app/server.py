@@ -6,7 +6,6 @@ from app.connectors.db.sqlite import create_db_and_tables
 from app.connectors.db.postgres import SessionDep, create_db_and_tables as pg_create_db_and_tables
 from app.middlewares.rate_limiter import RateLimiterMiddleware
 from app.common.configuration import config
-from app.models.db.user_role import UserRole
 
 logger = Logger(__name__);
 

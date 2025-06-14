@@ -6,8 +6,6 @@ from app.common.configuration import config
 from datetime import datetime
 
 from app.common.logger import Logger
-from app.models.db.user import User
-from app.models.db.user_role import UserRole
 from app.connectors.db.seeders import seed_user_roles, seed_users
 
 

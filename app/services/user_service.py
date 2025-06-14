@@ -1,7 +1,5 @@
 from datetime import datetime
-import time
 from typing import List
-from pydantic import BaseModel
 from sqlmodel import Session, select
 from sqlalchemy import func
 from app.common.logger import Logger
@@ -24,7 +22,7 @@ async def get_user(db: Session, user_id : int) -> User :
         users = db.exec(select(User).where(User.id == user_id)).all()
         return users[0]
     except Exception:
-        logger.error("Error occurred while fetching user from database")
+        raise Exception("Error occurred while fetching user from database")
     return None
 
 
@@ -33,7 +31,7 @@ async def get_user_by_email(db: Session, email: str):
         users = db.exec(select(User).where(User.email == email)).all()
         return users[0]
     except Exception:
-        logger.error("Error occurred while fetching user from db")
+        raise Exception("Error occurred while fetching user from db")
     return None
 
 
@@ -42,7 +40,7 @@ async def login_user(db: Session, login_request : LoginRequest):
         users = db.exec(select(User).where(User.email == login_request.email and User.password == login_request.password)).all()
         return users[0]
     except Exception:
-        logger.error("Error occurred while fetching user from db")
+        raise Exception("Error occurred while fetching user from db")
     return None
 
 async def create_user(db: Session, create_user_request: CreateUserRequest) -> User:
@@ -105,9 +103,8 @@ async def list_users(db: Session, q: str, sort_dir : str, sort_column : str, pag
         users = [user.model_dump() for user in users_result.all()]
 
         return user_count, users
-    except Exception as ex:
-        logger.error("Exception occurred while fetching user list from database")
-        logger.error(ex)
+    except Exception:
+        raise Exception("Exception occurred while fetching user list from database")
 
 
 async def logout(token : str):
