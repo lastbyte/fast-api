@@ -10,10 +10,11 @@ from app.common.logger import Logger
 
 logger = Logger(__name__)
 
-router = APIRouter(tags=["User Roles"])
+router = APIRouter(tags=["Roles"])
 
 @router.get("", description="Get all user roles")
-async def get_user_roles(db: SessionDep = SessionDep):
+@authenticate
+async def get_user_roles(db: SessionDep,request: Request, token = Depends(get_token)):
     try:
         user_roles = user_role_service.get_all_user_roles(db=db)
         return JSONResponse(content={"user_roles": [user_role.dict() for user_role in user_roles]}, status_code=200)
@@ -57,5 +58,15 @@ async def delete_user_role(request: Request, user_role_id: int, token = Depends(
     try:
         await user_role_service.delete_user_role(db=db, user_role_id=user_role_id)
         return JSONResponse(content={"message": "User role deleted successfully"}, status_code=200)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+    
+
+@router.get("/{user_role_id}/permissions")
+@authenticate
+async def get_user_role_permissions(request: Request, user_role_id: int, token = Depends(get_token),db: SessionDep = SessionDep):
+    try:
+        permissions = await user_role_service.get_user_role_permissions(db=db, user_role_id=user_role_id)
+        return JSONResponse(content=[permission.model_dump() for permission in permissions], status_code=200)
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))

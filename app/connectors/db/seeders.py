@@ -1,10 +1,95 @@
 from datetime import datetime
 from sqlmodel import Session
-from app.models.db.schema import User, UserRole
+from app.models.db.schema import Permission, User, UserRole, UserRolePermissionLink
 from app.common.logger import Logger
 
 logger = Logger(__name__)
 
+def seed_permissions(session: Session):
+    """Seed initial permissions into the database"""
+    try:
+        # Check if permissions already exist
+        existing_permissions = session.query(Permission).all()
+        if existing_permissions:
+            logger.info("Permissions already exist, skipping seeding")
+            return
+        
+        # Define initial permissions
+        permissions = [
+            Permission(
+                permission_name="create_user",
+                created_at=datetime.now(),
+                updated_at=datetime.now()
+            ),
+            Permission(
+                permission_name="read_user",
+                created_at=datetime.now(),
+                updated_at=datetime.now()
+            ),
+            Permission(
+                permission_name="update_user",
+                created_at=datetime.now(),
+                updated_at=datetime.now()
+            ),
+            Permission(
+                permission_name="delete_user",
+                created_at=datetime.now(),
+                updated_at=datetime.now()
+            ),
+            Permission(
+                permission_name="create_user_role",
+                created_at=datetime.now(),
+                updated_at=datetime.now()
+            ),
+            Permission(
+                permission_name="read_user_role",
+                created_at=datetime.now(),
+                updated_at=datetime.now()
+            ),
+            Permission(
+                permission_name="update_user_role",
+                created_at=datetime.now(),
+                updated_at=datetime.now()
+            ),
+            Permission(
+                permission_name="delete_user_role",
+                created_at=datetime.now(),
+                updated_at=datetime.now()
+            ),
+            Permission(
+                permission_name="create_permission",
+                created_at=datetime.now(),
+                updated_at=datetime.now(),
+            ),
+            Permission(
+                permission_name="read_permission",
+                created_at=datetime.now(),
+                updated_at=datetime.now()
+            ),
+            Permission(
+                permission_name="update_permission",
+                created_at=datetime.now(),
+                updated_at=datetime.now()
+            ),
+            Permission(
+                permission_name="delete_permission",
+                created_at=datetime.now(),
+                updated_at=datetime.now()
+            )
+        ]
+        
+        # Add permissions to session
+        for permission in permissions:
+            session.add(permission)
+        
+        # Commit the changes
+        session.commit()
+        logger.info("Successfully seeded permissions")
+    except Exception as e:
+        logger.error(f"Error seeding permissions: {e}")
+        session.rollback()
+        raise e 
+    
 def seed_user_roles(session: Session):
     """Seed initial user roles into the database"""
     try:
@@ -46,6 +131,79 @@ def seed_user_roles(session: Session):
         raise e 
     
 
+def seed_user_role_permissions(session: Session):
+    """Seed initial user role permissions into the database"""
+    try:
+        # Check if user role permissions already exist
+        existing_user_role_permissions = session.query(UserRolePermissionLink).all()
+        if existing_user_role_permissions:
+            logger.info("User role permissions already exist, skipping seeding")
+            return
+
+        # Define initial user role permissions
+        user_role_permissions = [
+            UserRolePermissionLink(
+                role_id=1,
+                permission_id=1
+            ),
+            UserRolePermissionLink(
+                role_id=1,
+                permission_id=2
+            ),
+            UserRolePermissionLink(
+                role_id=1,
+                permission_id=3
+            ),
+            UserRolePermissionLink(
+                role_id=1,
+                permission_id=4
+            ),
+            UserRolePermissionLink(
+                role_id=1,
+                permission_id=5
+            ),
+            UserRolePermissionLink(
+                role_id=1,
+                permission_id=6
+            ),
+            UserRolePermissionLink(
+                role_id=1,
+                permission_id=7
+            ),
+            UserRolePermissionLink(
+                role_id=1,
+                permission_id=8
+            ),
+            UserRolePermissionLink(
+                role_id=1,
+                permission_id=9
+            ),
+            UserRolePermissionLink(
+                role_id=1,
+                permission_id=10
+            ),
+            UserRolePermissionLink(
+                role_id=1,
+                permission_id=11
+            ),
+            UserRolePermissionLink(
+                role_id=1,
+                permission_id=12
+            ),
+        ]
+        
+        # Add user role permissions to session
+        for user_role_permission in user_role_permissions:
+            session.add(user_role_permission)
+        
+        # Commit the changes
+        session.commit()
+        logger.info("Successfully seeded user role permissions")
+    except Exception as e:
+        logger.error(f"Error seeding user role permissions: {e}")
+        session.rollback()
+        raise e 
+            
 def seed_users(session: Session):
     """Seed initial users into the database"""
     try:

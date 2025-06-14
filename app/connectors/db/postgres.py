@@ -5,7 +5,7 @@ from app.common.configuration import config
 
 
 from app.common.logger import Logger
-from app.connectors.db.seeders import seed_user_roles, seed_users
+from app.connectors.db.seeders import seed_permissions, seed_user_role_permissions, seed_user_roles, seed_users
 
 
 logger = Logger(__name__)
@@ -26,5 +26,7 @@ def create_db_and_tables():
     
     # Seed initial data
     with Session(engine) as session:
+        seed_permissions(session)
         seed_user_roles(session)
+        seed_user_role_permissions(session)
         seed_users(session)

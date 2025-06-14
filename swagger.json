@@ -1,0 +1,1783 @@
+{
+          "openapi": "3.1.0",
+          "info": {
+                    "title": "FastAPI Boilerplate",
+                    "description": "FastAPI Boilerplate",
+                    "version": "1.0.0"
+          },
+          "paths": {
+                    "/api/v1/health-check": {
+                              "get": {
+                                        "tags": [
+                                                  "Health"
+                                        ],
+                                        "summary": "Health Check",
+                                        "operationId": "health_check_api_v1_health_check_get",
+                                        "responses": {
+                                                  "200": {
+                                                            "description": "Successful Response",
+                                                            "content": {
+                                                                      "application/json": {
+                                                                                "schema": {}
+                                                                      }
+                                                            }
+                                                  }
+                                        }
+                              }
+                    },
+                    "/api/v1/roles": {
+                              "get": {
+                                        "tags": [
+                                                  "Roles"
+                                        ],
+                                        "summary": "Get User Roles",
+                                        "description": "Get all user roles",
+                                        "operationId": "get_user_roles_api_v1_roles_get",
+                                        "responses": {
+                                                  "200": {
+                                                            "description": "Successful Response",
+                                                            "content": {
+                                                                      "application/json": {
+                                                                                "schema": {}
+                                                                      }
+                                                            }
+                                                  }
+                                        },
+                                        "security": [
+                                                  {
+                                                            "HTTPBearer": []
+                                                  }
+                                        ]
+                              },
+                              "post": {
+                                        "tags": [
+                                                  "Roles"
+                                        ],
+                                        "summary": "Create User Role",
+                                        "operationId": "create_user_role_api_v1_roles_post",
+                                        "requestBody": {
+                                                  "content": {
+                                                            "application/json": {
+                                                                      "schema": {
+                                                                                "$ref": "#/components/schemas/CreateUserRoleRequest"
+                                                                      }
+                                                            }
+                                                  },
+                                                  "required": true
+                                        },
+                                        "responses": {
+                                                  "200": {
+                                                            "description": "Successful Response",
+                                                            "content": {
+                                                                      "application/json": {
+                                                                                "schema": {}
+                                                                      }
+                                                            }
+                                                  },
+                                                  "422": {
+                                                            "description": "Validation Error",
+                                                            "content": {
+                                                                      "application/json": {
+                                                                                "schema": {
+                                                                                          "$ref": "#/components/schemas/HTTPValidationError"
+                                                                                }
+                                                                      }
+                                                            }
+                                                  }
+                                        },
+                                        "security": [
+                                                  {
+                                                            "HTTPBearer": []
+                                                  }
+                                        ]
+                              }
+                    },
+                    "/api/v1/roles/{user_role_id}": {
+                              "get": {
+                                        "tags": [
+                                                  "Roles"
+                                        ],
+                                        "summary": "Get User Role",
+                                        "operationId": "get_user_role_api_v1_roles__user_role_id__get",
+                                        "security": [
+                                                  {
+                                                            "HTTPBearer": []
+                                                  }
+                                        ],
+                                        "parameters": [
+                                                  {
+                                                            "name": "user_role_id",
+                                                            "in": "path",
+                                                            "required": true,
+                                                            "schema": {
+                                                                      "type": "integer",
+                                                                      "title": "User Role Id"
+                                                            }
+                                                  }
+                                        ],
+                                        "responses": {
+                                                  "200": {
+                                                            "description": "Successful Response",
+                                                            "content": {
+                                                                      "application/json": {
+                                                                                "schema": {}
+                                                                      }
+                                                            }
+                                                  },
+                                                  "422": {
+                                                            "description": "Validation Error",
+                                                            "content": {
+                                                                      "application/json": {
+                                                                                "schema": {
+                                                                                          "$ref": "#/components/schemas/HTTPValidationError"
+                                                                                }
+                                                                      }
+                                                            }
+                                                  }
+                                        }
+                              },
+                              "put": {
+                                        "tags": [
+                                                  "Roles"
+                                        ],
+                                        "summary": "Update User Role",
+                                        "operationId": "update_user_role_api_v1_roles__user_role_id__put",
+                                        "security": [
+                                                  {
+                                                            "HTTPBearer": []
+                                                  }
+                                        ],
+                                        "parameters": [
+                                                  {
+                                                            "name": "user_role_id",
+                                                            "in": "path",
+                                                            "required": true,
+                                                            "schema": {
+                                                                      "type": "integer",
+                                                                      "title": "User Role Id"
+                                                            }
+                                                  }
+                                        ],
+                                        "requestBody": {
+                                                  "required": true,
+                                                  "content": {
+                                                            "application/json": {
+                                                                      "schema": {
+                                                                                "$ref": "#/components/schemas/CreateUserRoleRequest"
+                                                                      }
+                                                            }
+                                                  }
+                                        },
+                                        "responses": {
+                                                  "200": {
+                                                            "description": "Successful Response",
+                                                            "content": {
+                                                                      "application/json": {
+                                                                                "schema": {}
+                                                                      }
+                                                            }
+                                                  },
+                                                  "422": {
+                                                            "description": "Validation Error",
+                                                            "content": {
+                                                                      "application/json": {
+                                                                                "schema": {
+                                                                                          "$ref": "#/components/schemas/HTTPValidationError"
+                                                                                }
+                                                                      }
+                                                            }
+                                                  }
+                                        }
+                              },
+                              "delete": {
+                                        "tags": [
+                                                  "Roles"
+                                        ],
+                                        "summary": "Delete User Role",
+                                        "operationId": "delete_user_role_api_v1_roles__user_role_id__delete",
+                                        "security": [
+                                                  {
+                                                            "HTTPBearer": []
+                                                  }
+                                        ],
+                                        "parameters": [
+                                                  {
+                                                            "name": "user_role_id",
+                                                            "in": "path",
+                                                            "required": true,
+                                                            "schema": {
+                                                                      "type": "integer",
+                                                                      "title": "User Role Id"
+                                                            }
+                                                  }
+                                        ],
+                                        "responses": {
+                                                  "200": {
+                                                            "description": "Successful Response",
+                                                            "content": {
+                                                                      "application/json": {
+                                                                                "schema": {}
+                                                                      }
+                                                            }
+                                                  },
+                                                  "422": {
+                                                            "description": "Validation Error",
+                                                            "content": {
+                                                                      "application/json": {
+                                                                                "schema": {
+                                                                                          "$ref": "#/components/schemas/HTTPValidationError"
+                                                                                }
+                                                                      }
+                                                            }
+                                                  }
+                                        }
+                              }
+                    },
+                    "/api/v1/roles/{user_role_id}/permissions": {
+                              "get": {
+                                        "tags": [
+                                                  "Roles"
+                                        ],
+                                        "summary": "Get User Role Permissions",
+                                        "operationId": "get_user_role_permissions_api_v1_roles__user_role_id__permissions_get",
+                                        "security": [
+                                                  {
+                                                            "HTTPBearer": []
+                                                  }
+                                        ],
+                                        "parameters": [
+                                                  {
+                                                            "name": "user_role_id",
+                                                            "in": "path",
+                                                            "required": true,
+                                                            "schema": {
+                                                                      "type": "integer",
+                                                                      "title": "User Role Id"
+                                                            }
+                                                  }
+                                        ],
+                                        "responses": {
+                                                  "200": {
+                                                            "description": "Successful Response",
+                                                            "content": {
+                                                                      "application/json": {
+                                                                                "schema": {}
+                                                                      }
+                                                            }
+                                                  },
+                                                  "422": {
+                                                            "description": "Validation Error",
+                                                            "content": {
+                                                                      "application/json": {
+                                                                                "schema": {
+                                                                                          "$ref": "#/components/schemas/HTTPValidationError"
+                                                                                }
+                                                                      }
+                                                            }
+                                                  }
+                                        }
+                              }
+                    },
+                    "/api/v1/permissions": {
+                              "get": {
+                                        "tags": [
+                                                  "Permissions"
+                                        ],
+                                        "summary": "Get Permissions",
+                                        "operationId": "get_permissions_api_v1_permissions_get",
+                                        "security": [
+                                                  {
+                                                            "HTTPBearer": []
+                                                  }
+                                        ],
+                                        "parameters": [
+                                                  {
+                                                            "name": "page_num",
+                                                            "in": "query",
+                                                            "required": false,
+                                                            "schema": {
+                                                                      "type": "integer",
+                                                                      "default": 1,
+                                                                      "title": "Page Num"
+                                                            }
+                                                  },
+                                                  {
+                                                            "name": "page_size",
+                                                            "in": "query",
+                                                            "required": false,
+                                                            "schema": {
+                                                                      "type": "integer",
+                                                                      "default": 10,
+                                                                      "title": "Page Size"
+                                                            }
+                                                  }
+                                        ],
+                                        "responses": {
+                                                  "200": {
+                                                            "description": "Successful Response",
+                                                            "content": {
+                                                                      "application/json": {
+                                                                                "schema": {}
+                                                                      }
+                                                            }
+                                                  },
+                                                  "422": {
+                                                            "description": "Validation Error",
+                                                            "content": {
+                                                                      "application/json": {
+                                                                                "schema": {
+                                                                                          "$ref": "#/components/schemas/HTTPValidationError"
+                                                                                }
+                                                                      }
+                                                            }
+                                                  }
+                                        }
+                              },
+                              "post": {
+                                        "tags": [
+                                                  "Permissions"
+                                        ],
+                                        "summary": "Create Permission",
+                                        "operationId": "create_permission_api_v1_permissions_post",
+                                        "security": [
+                                                  {
+                                                            "HTTPBearer": []
+                                                  }
+                                        ],
+                                        "requestBody": {
+                                                  "required": true,
+                                                  "content": {
+                                                            "application/json": {
+                                                                      "schema": {
+                                                                                "$ref": "#/components/schemas/UserPermissionCreateRequest"
+                                                                      }
+                                                            }
+                                                  }
+                                        },
+                                        "responses": {
+                                                  "200": {
+                                                            "description": "Successful Response",
+                                                            "content": {
+                                                                      "application/json": {
+                                                                                "schema": {}
+                                                                      }
+                                                            }
+                                                  },
+                                                  "422": {
+                                                            "description": "Validation Error",
+                                                            "content": {
+                                                                      "application/json": {
+                                                                                "schema": {
+                                                                                          "$ref": "#/components/schemas/HTTPValidationError"
+                                                                                }
+                                                                      }
+                                                            }
+                                                  }
+                                        }
+                              }
+                    },
+                    "/api/v1/permissions/{permission_id}": {
+                              "get": {
+                                        "tags": [
+                                                  "Permissions"
+                                        ],
+                                        "summary": "Get Permission",
+                                        "operationId": "get_permission_api_v1_permissions__permission_id__get",
+                                        "security": [
+                                                  {
+                                                            "HTTPBearer": []
+                                                  }
+                                        ],
+                                        "parameters": [
+                                                  {
+                                                            "name": "permission_id",
+                                                            "in": "path",
+                                                            "required": true,
+                                                            "schema": {
+                                                                      "type": "integer",
+                                                                      "title": "Permission Id"
+                                                            }
+                                                  }
+                                        ],
+                                        "responses": {
+                                                  "200": {
+                                                            "description": "Successful Response",
+                                                            "content": {
+                                                                      "application/json": {
+                                                                                "schema": {}
+                                                                      }
+                                                            }
+                                                  },
+                                                  "422": {
+                                                            "description": "Validation Error",
+                                                            "content": {
+                                                                      "application/json": {
+                                                                                "schema": {
+                                                                                          "$ref": "#/components/schemas/HTTPValidationError"
+                                                                                }
+                                                                      }
+                                                            }
+                                                  }
+                                        }
+                              },
+                              "put": {
+                                        "tags": [
+                                                  "Permissions"
+                                        ],
+                                        "summary": "Update Permission",
+                                        "operationId": "update_permission_api_v1_permissions__permission_id__put",
+                                        "security": [
+                                                  {
+                                                            "HTTPBearer": []
+                                                  }
+                                        ],
+                                        "parameters": [
+                                                  {
+                                                            "name": "permission_id",
+                                                            "in": "path",
+                                                            "required": true,
+                                                            "schema": {
+                                                                      "type": "integer",
+                                                                      "title": "Permission Id"
+                                                            }
+                                                  }
+                                        ],
+                                        "requestBody": {
+                                                  "required": true,
+                                                  "content": {
+                                                            "application/json": {
+                                                                      "schema": {
+                                                                                "$ref": "#/components/schemas/UserPermissionUpdateRequest"
+                                                                      }
+                                                            }
+                                                  }
+                                        },
+                                        "responses": {
+                                                  "200": {
+                                                            "description": "Successful Response",
+                                                            "content": {
+                                                                      "application/json": {
+                                                                                "schema": {}
+                                                                      }
+                                                            }
+                                                  },
+                                                  "422": {
+                                                            "description": "Validation Error",
+                                                            "content": {
+                                                                      "application/json": {
+                                                                                "schema": {
+                                                                                          "$ref": "#/components/schemas/HTTPValidationError"
+                                                                                }
+                                                                      }
+                                                            }
+                                                  }
+                                        }
+                              },
+                              "delete": {
+                                        "tags": [
+                                                  "Permissions"
+                                        ],
+                                        "summary": "Delete Permission",
+                                        "operationId": "delete_permission_api_v1_permissions__permission_id__delete",
+                                        "security": [
+                                                  {
+                                                            "HTTPBearer": []
+                                                  }
+                                        ],
+                                        "parameters": [
+                                                  {
+                                                            "name": "permission_id",
+                                                            "in": "path",
+                                                            "required": true,
+                                                            "schema": {
+                                                                      "type": "integer",
+                                                                      "title": "Permission Id"
+                                                            }
+                                                  }
+                                        ],
+                                        "responses": {
+                                                  "200": {
+                                                            "description": "Successful Response",
+                                                            "content": {
+                                                                      "application/json": {
+                                                                                "schema": {}
+                                                                      }
+                                                            }
+                                                  },
+                                                  "422": {
+                                                            "description": "Validation Error",
+                                                            "content": {
+                                                                      "application/json": {
+                                                                                "schema": {
+                                                                                          "$ref": "#/components/schemas/HTTPValidationError"
+                                                                                }
+                                                                      }
+                                                            }
+                                                  }
+                                        }
+                              }
+                    },
+                    "/api/v1/users/sign-up": {
+                              "post": {
+                                        "tags": [
+                                                  "Authentication"
+                                        ],
+                                        "summary": "Sign Up",
+                                        "operationId": "sign_up_api_v1_users_sign_up_post",
+                                        "requestBody": {
+                                                  "content": {
+                                                            "application/json": {
+                                                                      "schema": {
+                                                                                "$ref": "#/components/schemas/CreateUserRequest"
+                                                                      }
+                                                            }
+                                                  },
+                                                  "required": true
+                                        },
+                                        "responses": {
+                                                  "200": {
+                                                            "description": "Successful Response",
+                                                            "content": {
+                                                                      "application/json": {
+                                                                                "schema": {
+                                                                                          "$ref": "#/components/schemas/User"
+                                                                                }
+                                                                      }
+                                                            }
+                                                  },
+                                                  "422": {
+                                                            "description": "Validation Error",
+                                                            "content": {
+                                                                      "application/json": {
+                                                                                "schema": {
+                                                                                          "$ref": "#/components/schemas/HTTPValidationError"
+                                                                                }
+                                                                      }
+                                                            }
+                                                  }
+                                        }
+                              }
+                    },
+                    "/api/v1/users/login": {
+                              "post": {
+                                        "tags": [
+                                                  "Authentication"
+                                        ],
+                                        "summary": "Login",
+                                        "description": "Generate JWT token using email and password",
+                                        "operationId": "login_api_v1_users_login_post",
+                                        "requestBody": {
+                                                  "content": {
+                                                            "application/json": {
+                                                                      "schema": {
+                                                                                "$ref": "#/components/schemas/LoginRequest"
+                                                                      }
+                                                            }
+                                                  },
+                                                  "required": true
+                                        },
+                                        "responses": {
+                                                  "200": {
+                                                            "description": "Successful Response",
+                                                            "content": {
+                                                                      "application/json": {
+                                                                                "schema": {}
+                                                                      }
+                                                            }
+                                                  },
+                                                  "422": {
+                                                            "description": "Validation Error",
+                                                            "content": {
+                                                                      "application/json": {
+                                                                                "schema": {
+                                                                                          "$ref": "#/components/schemas/HTTPValidationError"
+                                                                                }
+                                                                      }
+                                                            }
+                                                  }
+                                        }
+                              }
+                    },
+                    "/api/v1/users/update/password": {
+                              "post": {
+                                        "tags": [
+                                                  "Authentication"
+                                        ],
+                                        "summary": "Update Password",
+                                        "operationId": "update_password_api_v1_users_update_password_post",
+                                        "requestBody": {
+                                                  "content": {
+                                                            "application/json": {
+                                                                      "schema": {
+                                                                                "$ref": "#/components/schemas/UpdatePasswordRequest"
+                                                                      }
+                                                            }
+                                                  },
+                                                  "required": true
+                                        },
+                                        "responses": {
+                                                  "200": {
+                                                            "description": "Successful Response",
+                                                            "content": {
+                                                                      "application/json": {
+                                                                                "schema": {}
+                                                                      }
+                                                            }
+                                                  },
+                                                  "422": {
+                                                            "description": "Validation Error",
+                                                            "content": {
+                                                                      "application/json": {
+                                                                                "schema": {
+                                                                                          "$ref": "#/components/schemas/HTTPValidationError"
+                                                                                }
+                                                                      }
+                                                            }
+                                                  }
+                                        },
+                                        "security": [
+                                                  {
+                                                            "HTTPBearer": []
+                                                  }
+                                        ]
+                              }
+                    },
+                    "/api/v1/users/logout": {
+                              "get": {
+                                        "tags": [
+                                                  "Authentication"
+                                        ],
+                                        "summary": "Logout",
+                                        "description": "invalidates the jwt token",
+                                        "operationId": "logout_api_v1_users_logout_get",
+                                        "responses": {
+                                                  "200": {
+                                                            "description": "Successful Response",
+                                                            "content": {
+                                                                      "application/json": {
+                                                                                "schema": {}
+                                                                      }
+                                                            }
+                                                  }
+                                        },
+                                        "security": [
+                                                  {
+                                                            "HTTPBearer": []
+                                                  }
+                                        ]
+                              }
+                    },
+                    "/api/v1/users/search": {
+                              "get": {
+                                        "tags": [
+                                                  "Users"
+                                        ],
+                                        "summary": "Search Users",
+                                        "description": "Search users by name for email",
+                                        "operationId": "search_users_api_v1_users_search_get",
+                                        "security": [
+                                                  {
+                                                            "HTTPBearer": []
+                                                  }
+                                        ],
+                                        "parameters": [
+                                                  {
+                                                            "name": "q",
+                                                            "in": "query",
+                                                            "required": false,
+                                                            "schema": {
+                                                                      "anyOf": [
+                                                                                {
+                                                                                          "type": "string"
+                                                                                },
+                                                                                {
+                                                                                          "type": "null"
+                                                                                }
+                                                                      ],
+                                                                      "default": "",
+                                                                      "title": "Q"
+                                                            }
+                                                  },
+                                                  {
+                                                            "name": "page_size",
+                                                            "in": "query",
+                                                            "required": false,
+                                                            "schema": {
+                                                                      "anyOf": [
+                                                                                {
+                                                                                          "type": "integer"
+                                                                                },
+                                                                                {
+                                                                                          "type": "null"
+                                                                                }
+                                                                      ],
+                                                                      "default": 10,
+                                                                      "title": "Page Size"
+                                                            }
+                                                  },
+                                                  {
+                                                            "name": "page_num",
+                                                            "in": "query",
+                                                            "required": false,
+                                                            "schema": {
+                                                                      "anyOf": [
+                                                                                {
+                                                                                          "type": "integer"
+                                                                                },
+                                                                                {
+                                                                                          "type": "null"
+                                                                                }
+                                                                      ],
+                                                                      "default": 1,
+                                                                      "title": "Page Num"
+                                                            }
+                                                  },
+                                                  {
+                                                            "name": "sort_dir",
+                                                            "in": "query",
+                                                            "required": false,
+                                                            "schema": {
+                                                                      "anyOf": [
+                                                                                {
+                                                                                          "type": "string"
+                                                                                },
+                                                                                {
+                                                                                          "type": "null"
+                                                                                }
+                                                                      ],
+                                                                      "default": "asc",
+                                                                      "title": "Sort Dir"
+                                                            }
+                                                  },
+                                                  {
+                                                            "name": "sort_column",
+                                                            "in": "query",
+                                                            "required": false,
+                                                            "schema": {
+                                                                      "anyOf": [
+                                                                                {
+                                                                                          "type": "string"
+                                                                                },
+                                                                                {
+                                                                                          "type": "null"
+                                                                                }
+                                                                      ],
+                                                                      "default": "id",
+                                                                      "title": "Sort Column"
+                                                            }
+                                                  }
+                                        ],
+                                        "responses": {
+                                                  "200": {
+                                                            "description": "Successful Response",
+                                                            "content": {
+                                                                      "application/json": {
+                                                                                "schema": {}
+                                                                      }
+                                                            }
+                                                  },
+                                                  "422": {
+                                                            "description": "Validation Error",
+                                                            "content": {
+                                                                      "application/json": {
+                                                                                "schema": {
+                                                                                          "$ref": "#/components/schemas/HTTPValidationError"
+                                                                                }
+                                                                      }
+                                                            }
+                                                  }
+                                        }
+                              }
+                    },
+                    "/api/v1/users/profile/me": {
+                              "get": {
+                                        "tags": [
+                                                  "Users"
+                                        ],
+                                        "summary": "Get Self User Profile",
+                                        "operationId": "get_self_user_profile_api_v1_users_profile_me_get",
+                                        "responses": {
+                                                  "200": {
+                                                            "description": "Successful Response",
+                                                            "content": {
+                                                                      "application/json": {
+                                                                                "schema": {
+                                                                                          "$ref": "#/components/schemas/SelfUserProfileResponse"
+                                                                                }
+                                                                      }
+                                                            }
+                                                  }
+                                        },
+                                        "security": [
+                                                  {
+                                                            "HTTPBearer": []
+                                                  }
+                                        ]
+                              }
+                    },
+                    "/api/v1/users/profile/{user_id}": {
+                              "get": {
+                                        "tags": [
+                                                  "User Profile"
+                                        ],
+                                        "summary": "Get User Profile",
+                                        "operationId": "get_user_profile_api_v1_users_profile__user_id__get",
+                                        "security": [
+                                                  {
+                                                            "HTTPBearer": []
+                                                  }
+                                        ],
+                                        "parameters": [
+                                                  {
+                                                            "name": "user_id",
+                                                            "in": "path",
+                                                            "required": true,
+                                                            "schema": {
+                                                                      "type": "integer",
+                                                                      "title": "User Id"
+                                                            }
+                                                  }
+                                        ],
+                                        "responses": {
+                                                  "200": {
+                                                            "description": "Successful Response",
+                                                            "content": {
+                                                                      "application/json": {
+                                                                                "schema": {
+                                                                                          "$ref": "#/components/schemas/UserProfileResponse"
+                                                                                }
+                                                                      }
+                                                            }
+                                                  },
+                                                  "422": {
+                                                            "description": "Validation Error",
+                                                            "content": {
+                                                                      "application/json": {
+                                                                                "schema": {
+                                                                                          "$ref": "#/components/schemas/HTTPValidationError"
+                                                                                }
+                                                                      }
+                                                            }
+                                                  }
+                                        }
+                              }
+                    },
+                    "/api/v1/users/{user_id}/update/role/{role_id}": {
+                              "patch": {
+                                        "tags": [
+                                                  "Roles"
+                                        ],
+                                        "summary": "Update User Role",
+                                        "operationId": "update_user_role_api_v1_users__user_id__update_role__role_id__patch",
+                                        "security": [
+                                                  {
+                                                            "HTTPBearer": []
+                                                  }
+                                        ],
+                                        "parameters": [
+                                                  {
+                                                            "name": "user_id",
+                                                            "in": "path",
+                                                            "required": true,
+                                                            "schema": {
+                                                                      "type": "integer",
+                                                                      "title": "User Id"
+                                                            }
+                                                  },
+                                                  {
+                                                            "name": "role_id",
+                                                            "in": "path",
+                                                            "required": true,
+                                                            "schema": {
+                                                                      "type": "integer",
+                                                                      "title": "Role Id"
+                                                            }
+                                                  }
+                                        ],
+                                        "responses": {
+                                                  "200": {
+                                                            "description": "Successful Response",
+                                                            "content": {
+                                                                      "application/json": {
+                                                                                "schema": {}
+                                                                      }
+                                                            }
+                                                  },
+                                                  "422": {
+                                                            "description": "Validation Error",
+                                                            "content": {
+                                                                      "application/json": {
+                                                                                "schema": {
+                                                                                          "$ref": "#/components/schemas/HTTPValidationError"
+                                                                                }
+                                                                      }
+                                                            }
+                                                  }
+                                        }
+                              }
+                    },
+                    "/api/v1/users/update/profile": {
+                              "patch": {
+                                        "tags": [
+                                                  "User Profile"
+                                        ],
+                                        "summary": "Update Self User Profile",
+                                        "operationId": "update_self_user_profile_api_v1_users_update_profile_patch",
+                                        "requestBody": {
+                                                  "content": {
+                                                            "application/json": {
+                                                                      "schema": {
+                                                                                "$ref": "#/components/schemas/UpdateUserProfileRequest"
+                                                                      }
+                                                            }
+                                                  },
+                                                  "required": true
+                                        },
+                                        "responses": {
+                                                  "200": {
+                                                            "description": "Successful Response",
+                                                            "content": {
+                                                                      "application/json": {
+                                                                                "schema": {
+                                                                                          "$ref": "#/components/schemas/SelfUserProfileResponse"
+                                                                                }
+                                                                      }
+                                                            }
+                                                  },
+                                                  "422": {
+                                                            "description": "Validation Error",
+                                                            "content": {
+                                                                      "application/json": {
+                                                                                "schema": {
+                                                                                          "$ref": "#/components/schemas/HTTPValidationError"
+                                                                                }
+                                                                      }
+                                                            }
+                                                  }
+                                        },
+                                        "security": [
+                                                  {
+                                                            "HTTPBearer": []
+                                                  }
+                                        ]
+                              }
+                    },
+                    "/api/v1/users/{user_id}/update/profile": {
+                              "patch": {
+                                        "tags": [
+                                                  "User Profile"
+                                        ],
+                                        "summary": "Update User Profile",
+                                        "operationId": "update_user_profile_api_v1_users__user_id__update_profile_patch",
+                                        "security": [
+                                                  {
+                                                            "HTTPBearer": []
+                                                  }
+                                        ],
+                                        "parameters": [
+                                                  {
+                                                            "name": "user_id",
+                                                            "in": "path",
+                                                            "required": true,
+                                                            "schema": {
+                                                                      "type": "integer",
+                                                                      "title": "User Id"
+                                                            }
+                                                  }
+                                        ],
+                                        "requestBody": {
+                                                  "required": true,
+                                                  "content": {
+                                                            "application/json": {
+                                                                      "schema": {
+                                                                                "$ref": "#/components/schemas/UpdateUserProfileRequest"
+                                                                      }
+                                                            }
+                                                  }
+                                        },
+                                        "responses": {
+                                                  "200": {
+                                                            "description": "Successful Response",
+                                                            "content": {
+                                                                      "application/json": {
+                                                                                "schema": {
+                                                                                          "$ref": "#/components/schemas/SelfUserProfileResponse"
+                                                                                }
+                                                                      }
+                                                            }
+                                                  },
+                                                  "422": {
+                                                            "description": "Validation Error",
+                                                            "content": {
+                                                                      "application/json": {
+                                                                                "schema": {
+                                                                                          "$ref": "#/components/schemas/HTTPValidationError"
+                                                                                }
+                                                                      }
+                                                            }
+                                                  }
+                                        }
+                              }
+                    },
+                    "/api/v1/users/sign-up/verify": {
+                              "post": {
+                                        "tags": [
+                                                  "Authentication"
+                                        ],
+                                        "summary": "Verify User Sign Up",
+                                        "operationId": "verify_user_sign_up_api_v1_users_sign_up_verify_post",
+                                        "parameters": [
+                                                  {
+                                                            "name": "user_id",
+                                                            "in": "query",
+                                                            "required": true,
+                                                            "schema": {
+                                                                      "type": "integer",
+                                                                      "title": "User Id"
+                                                            }
+                                                  },
+                                                  {
+                                                            "name": "verification_code",
+                                                            "in": "query",
+                                                            "required": true,
+                                                            "schema": {
+                                                                      "type": "string",
+                                                                      "title": "Verification Code"
+                                                            }
+                                                  }
+                                        ],
+                                        "responses": {
+                                                  "200": {
+                                                            "description": "Successful Response",
+                                                            "content": {
+                                                                      "application/json": {
+                                                                                "schema": {
+                                                                                          "$ref": "#/components/schemas/User"
+                                                                                }
+                                                                      }
+                                                            }
+                                                  },
+                                                  "422": {
+                                                            "description": "Validation Error",
+                                                            "content": {
+                                                                      "application/json": {
+                                                                                "schema": {
+                                                                                          "$ref": "#/components/schemas/HTTPValidationError"
+                                                                                }
+                                                                      }
+                                                            }
+                                                  }
+                                        }
+                              }
+                    }
+          },
+          "components": {
+                    "schemas": {
+                              "CreateUserRequest": {
+                                        "properties": {
+                                                  "email": {
+                                                            "type": "string",
+                                                            "title": "Email",
+                                                            "description": "email of the user",
+                                                            "examples": [
+                                                                      "user@test.com"
+                                                            ]
+                                                  },
+                                                  "password": {
+                                                            "type": "string",
+                                                            "title": "Password",
+                                                            "description": "Encrypted password of the user",
+                                                            "examples": [
+                                                                      "5f4dcc3b5aa765d61d8327deb882cf99"
+                                                            ]
+                                                  },
+                                                  "first_name": {
+                                                            "anyOf": [
+                                                                      {
+                                                                                "type": "string"
+                                                                      },
+                                                                      {
+                                                                                "type": "null"
+                                                                      }
+                                                            ],
+                                                            "title": "First Name",
+                                                            "description": "first name of the user",
+                                                            "examples": [
+                                                                      "John"
+                                                            ]
+                                                  },
+                                                  "last_name": {
+                                                            "anyOf": [
+                                                                      {
+                                                                                "type": "string"
+                                                                      },
+                                                                      {
+                                                                                "type": "null"
+                                                                      }
+                                                            ],
+                                                            "title": "Last Name",
+                                                            "description": "last name of the user",
+                                                            "examples": [
+                                                                      "Doe"
+                                                            ]
+                                                  },
+                                                  "role_id": {
+                                                            "type": "integer",
+                                                            "title": "Role Id",
+                                                            "description": "role id of the user",
+                                                            "examples": [
+                                                                      1
+                                                            ]
+                                                  }
+                                        },
+                                        "type": "object",
+                                        "required": [
+                                                  "email",
+                                                  "password",
+                                                  "first_name",
+                                                  "last_name",
+                                                  "role_id"
+                                        ],
+                                        "title": "CreateUserRequest"
+                              },
+                              "CreateUserRoleRequest": {
+                                        "properties": {
+                                                  "role_name": {
+                                                            "type": "string",
+                                                            "title": "Role Name",
+                                                            "description": "name of the role",
+                                                            "examples": [
+                                                                      "admin",
+                                                                      "user",
+                                                                      "moderator"
+                                                            ]
+                                                  }
+                                        },
+                                        "type": "object",
+                                        "required": [
+                                                  "role_name"
+                                        ],
+                                        "title": "CreateUserRoleRequest"
+                              },
+                              "HTTPValidationError": {
+                                        "properties": {
+                                                  "detail": {
+                                                            "items": {
+                                                                      "$ref": "#/components/schemas/ValidationError"
+                                                            },
+                                                            "type": "array",
+                                                            "title": "Detail"
+                                                  }
+                                        },
+                                        "type": "object",
+                                        "title": "HTTPValidationError"
+                              },
+                              "LoginRequest": {
+                                        "properties": {
+                                                  "email": {
+                                                            "type": "string",
+                                                            "title": "Email",
+                                                            "description": "email of the user",
+                                                            "examples": [
+                                                                      "user@test.com"
+                                                            ]
+                                                  },
+                                                  "password": {
+                                                            "type": "string",
+                                                            "title": "Password",
+                                                            "description": "Encrypted password of the user",
+                                                            "examples": [
+                                                                      "5f4dcc3b5aa765d61d8327deb882cf99"
+                                                            ]
+                                                  }
+                                        },
+                                        "type": "object",
+                                        "required": [
+                                                  "email",
+                                                  "password"
+                                        ],
+                                        "title": "LoginRequest"
+                              },
+                              "SelfUserProfileResponse": {
+                                        "properties": {
+                                                  "user": {
+                                                            "$ref": "#/components/schemas/User"
+                                                  },
+                                                  "profile": {
+                                                            "anyOf": [
+                                                                      {
+                                                                                "$ref": "#/components/schemas/UserProfile"
+                                                                      },
+                                                                      {
+                                                                                "type": "null"
+                                                                      }
+                                                            ]
+                                                  }
+                                        },
+                                        "type": "object",
+                                        "required": [
+                                                  "user"
+                                        ],
+                                        "title": "SelfUserProfileResponse"
+                              },
+                              "UpdatePasswordRequest": {
+                                        "properties": {
+                                                  "existing_password": {
+                                                            "type": "string",
+                                                            "title": "Existing Password",
+                                                            "description": "Existing password of the user",
+                                                            "examples": [
+                                                                      "5f4dcc3b5aa765d61d8327deb882cf99"
+                                                            ]
+                                                  },
+                                                  "new_password": {
+                                                            "type": "string",
+                                                            "title": "New Password",
+                                                            "description": "Encrypted password of the user",
+                                                            "examples": [
+                                                                      "5f4dcc3b5aa765d61d8327deb882cf99"
+                                                            ]
+                                                  }
+                                        },
+                                        "type": "object",
+                                        "required": [
+                                                  "existing_password",
+                                                  "new_password"
+                                        ],
+                                        "title": "UpdatePasswordRequest"
+                              },
+                              "UpdateUserProfileRequest": {
+                                        "properties": {
+                                                  "profile_picture": {
+                                                            "anyOf": [
+                                                                      {
+                                                                                "type": "string"
+                                                                      },
+                                                                      {
+                                                                                "type": "null"
+                                                                      }
+                                                            ],
+                                                            "title": "Profile Picture",
+                                                            "description": "Profile picture of the user"
+                                                  },
+                                                  "bio": {
+                                                            "anyOf": [
+                                                                      {
+                                                                                "type": "string"
+                                                                      },
+                                                                      {
+                                                                                "type": "null"
+                                                                      }
+                                                            ],
+                                                            "title": "Bio",
+                                                            "description": "Bio of the user"
+                                                  },
+                                                  "location": {
+                                                            "anyOf": [
+                                                                      {
+                                                                                "type": "string"
+                                                                      },
+                                                                      {
+                                                                                "type": "null"
+                                                                      }
+                                                            ],
+                                                            "title": "Location",
+                                                            "description": "Location of the user"
+                                                  },
+                                                  "website": {
+                                                            "anyOf": [
+                                                                      {
+                                                                                "type": "string"
+                                                                      },
+                                                                      {
+                                                                                "type": "null"
+                                                                      }
+                                                            ],
+                                                            "title": "Website",
+                                                            "description": "Website of the user"
+                                                  },
+                                                  "contact_number": {
+                                                            "anyOf": [
+                                                                      {
+                                                                                "type": "string"
+                                                                      },
+                                                                      {
+                                                                                "type": "null"
+                                                                      }
+                                                            ],
+                                                            "title": "Contact Number",
+                                                            "description": "Contact number of the user"
+                                                  }
+                                        },
+                                        "type": "object",
+                                        "title": "UpdateUserProfileRequest"
+                              },
+                              "User": {
+                                        "properties": {
+                                                  "id": {
+                                                            "anyOf": [
+                                                                      {
+                                                                                "type": "integer"
+                                                                      },
+                                                                      {
+                                                                                "type": "null"
+                                                                      }
+                                                            ],
+                                                            "title": "Id"
+                                                  },
+                                                  "created_at": {
+                                                            "anyOf": [
+                                                                      {
+                                                                                "type": "string"
+                                                                      },
+                                                                      {
+                                                                                "type": "null"
+                                                                      }
+                                                            ],
+                                                            "title": "Created At"
+                                                  },
+                                                  "updated_at": {
+                                                            "anyOf": [
+                                                                      {
+                                                                                "type": "string"
+                                                                      },
+                                                                      {
+                                                                                "type": "null"
+                                                                      }
+                                                            ],
+                                                            "title": "Updated At"
+                                                  },
+                                                  "first_name": {
+                                                            "anyOf": [
+                                                                      {
+                                                                                "type": "string"
+                                                                      },
+                                                                      {
+                                                                                "type": "null"
+                                                                      }
+                                                            ],
+                                                            "title": "First Name",
+                                                            "description": "First Name of the user"
+                                                  },
+                                                  "last_name": {
+                                                            "anyOf": [
+                                                                      {
+                                                                                "type": "string"
+                                                                      },
+                                                                      {
+                                                                                "type": "null"
+                                                                      }
+                                                            ],
+                                                            "title": "Last Name",
+                                                            "description": "Last Name of the user"
+                                                  },
+                                                  "email": {
+                                                            "anyOf": [
+                                                                      {
+                                                                                "type": "string"
+                                                                      },
+                                                                      {
+                                                                                "type": "null"
+                                                                      }
+                                                            ],
+                                                            "title": "Email",
+                                                            "description": "Email of the user"
+                                                  },
+                                                  "status": {
+                                                            "anyOf": [
+                                                                      {
+                                                                                "$ref": "#/components/schemas/UserStatus"
+                                                                      },
+                                                                      {
+                                                                                "type": "null"
+                                                                      }
+                                                            ],
+                                                            "default": 1
+                                                  },
+                                                  "role_id": {
+                                                            "anyOf": [
+                                                                      {
+                                                                                "type": "integer"
+                                                                      },
+                                                                      {
+                                                                                "type": "null"
+                                                                      }
+                                                            ],
+                                                            "title": "Role Id"
+                                                  }
+                                        },
+                                        "type": "object",
+                                        "title": "User"
+                              },
+                              "UserPermissionCreateRequest": {
+                                        "properties": {
+                                                  "permission_name": {
+                                                            "type": "string",
+                                                            "title": "Permission Name",
+                                                            "description": "name of the permission",
+                                                            "examples": [
+                                                                      "create_user",
+                                                                      "update_user",
+                                                                      "delete_user"
+                                                            ]
+                                                  }
+                                        },
+                                        "type": "object",
+                                        "required": [
+                                                  "permission_name"
+                                        ],
+                                        "title": "UserPermissionCreateRequest"
+                              },
+                              "UserPermissionUpdateRequest": {
+                                        "properties": {
+                                                  "permission_name": {
+                                                            "type": "string",
+                                                            "title": "Permission Name",
+                                                            "description": "name of the permission",
+                                                            "examples": [
+                                                                      "create_user",
+                                                                      "update_user",
+                                                                      "delete_user"
+                                                            ]
+                                                  }
+                                        },
+                                        "type": "object",
+                                        "required": [
+                                                  "permission_name"
+                                        ],
+                                        "title": "UserPermissionUpdateRequest"
+                              },
+                              "UserProfile": {
+                                        "properties": {
+                                                  "id": {
+                                                            "anyOf": [
+                                                                      {
+                                                                                "type": "integer"
+                                                                      },
+                                                                      {
+                                                                                "type": "null"
+                                                                      }
+                                                            ],
+                                                            "title": "Id"
+                                                  },
+                                                  "created_at": {
+                                                            "anyOf": [
+                                                                      {
+                                                                                "type": "string"
+                                                                      },
+                                                                      {
+                                                                                "type": "null"
+                                                                      }
+                                                            ],
+                                                            "title": "Created At"
+                                                  },
+                                                  "updated_at": {
+                                                            "anyOf": [
+                                                                      {
+                                                                                "type": "string"
+                                                                      },
+                                                                      {
+                                                                                "type": "null"
+                                                                      }
+                                                            ],
+                                                            "title": "Updated At"
+                                                  },
+                                                  "user_id": {
+                                                            "anyOf": [
+                                                                      {
+                                                                                "type": "integer"
+                                                                      },
+                                                                      {
+                                                                                "type": "null"
+                                                                      }
+                                                            ],
+                                                            "title": "User Id"
+                                                  },
+                                                  "profile_picture": {
+                                                            "anyOf": [
+                                                                      {
+                                                                                "type": "string"
+                                                                      },
+                                                                      {
+                                                                                "type": "null"
+                                                                      }
+                                                            ],
+                                                            "title": "Profile Picture",
+                                                            "description": "Profile picture of the user"
+                                                  },
+                                                  "bio": {
+                                                            "anyOf": [
+                                                                      {
+                                                                                "type": "string"
+                                                                      },
+                                                                      {
+                                                                                "type": "null"
+                                                                      }
+                                                            ],
+                                                            "title": "Bio",
+                                                            "description": "Bio of the user"
+                                                  },
+                                                  "location": {
+                                                            "anyOf": [
+                                                                      {
+                                                                                "type": "string"
+                                                                      },
+                                                                      {
+                                                                                "type": "null"
+                                                                      }
+                                                            ],
+                                                            "title": "Location",
+                                                            "description": "Location of the user"
+                                                  },
+                                                  "website": {
+                                                            "anyOf": [
+                                                                      {
+                                                                                "type": "string"
+                                                                      },
+                                                                      {
+                                                                                "type": "null"
+                                                                      }
+                                                            ],
+                                                            "title": "Website",
+                                                            "description": "Website of the user"
+                                                  },
+                                                  "contact_number": {
+                                                            "anyOf": [
+                                                                      {
+                                                                                "type": "string"
+                                                                      },
+                                                                      {
+                                                                                "type": "null"
+                                                                      }
+                                                            ],
+                                                            "title": "Contact Number",
+                                                            "description": "Contact number of the user"
+                                                  },
+                                                  "address": {
+                                                            "anyOf": [
+                                                                      {
+                                                                                "type": "string"
+                                                                      },
+                                                                      {
+                                                                                "type": "null"
+                                                                      }
+                                                            ],
+                                                            "title": "Address",
+                                                            "description": "Address of the user"
+                                                  },
+                                                  "city": {
+                                                            "anyOf": [
+                                                                      {
+                                                                                "type": "string"
+                                                                      },
+                                                                      {
+                                                                                "type": "null"
+                                                                      }
+                                                            ],
+                                                            "title": "City",
+                                                            "description": "City of the user"
+                                                  },
+                                                  "state": {
+                                                            "anyOf": [
+                                                                      {
+                                                                                "type": "string"
+                                                                      },
+                                                                      {
+                                                                                "type": "null"
+                                                                      }
+                                                            ],
+                                                            "title": "State",
+                                                            "description": "State of the user"
+                                                  },
+                                                  "country": {
+                                                            "anyOf": [
+                                                                      {
+                                                                                "type": "string"
+                                                                      },
+                                                                      {
+                                                                                "type": "null"
+                                                                      }
+                                                            ],
+                                                            "title": "Country",
+                                                            "description": "Country of the user"
+                                                  },
+                                                  "zip_code": {
+                                                            "anyOf": [
+                                                                      {
+                                                                                "type": "string"
+                                                                      },
+                                                                      {
+                                                                                "type": "null"
+                                                                      }
+                                                            ],
+                                                            "title": "Zip Code",
+                                                            "description": "Zip code of the user"
+                                                  },
+                                                  "date_of_birth": {
+                                                            "anyOf": [
+                                                                      {
+                                                                                "type": "string",
+                                                                                "format": "date-time"
+                                                                      },
+                                                                      {
+                                                                                "type": "null"
+                                                                      }
+                                                            ],
+                                                            "title": "Date Of Birth",
+                                                            "description": "Date of birth of the user"
+                                                  },
+                                                  "gender": {
+                                                            "anyOf": [
+                                                                      {
+                                                                                "type": "string"
+                                                                      },
+                                                                      {
+                                                                                "type": "null"
+                                                                      }
+                                                            ],
+                                                            "title": "Gender",
+                                                            "description": "Gender of the user"
+                                                  },
+                                                  "marital_status": {
+                                                            "anyOf": [
+                                                                      {
+                                                                                "type": "string"
+                                                                      },
+                                                                      {
+                                                                                "type": "null"
+                                                                      }
+                                                            ],
+                                                            "title": "Marital Status",
+                                                            "description": "Marital status of the user"
+                                                  },
+                                                  "occupation": {
+                                                            "anyOf": [
+                                                                      {
+                                                                                "type": "string"
+                                                                      },
+                                                                      {
+                                                                                "type": "null"
+                                                                      }
+                                                            ],
+                                                            "title": "Occupation",
+                                                            "description": "Occupation of the user"
+                                                  },
+                                                  "education": {
+                                                            "anyOf": [
+                                                                      {
+                                                                                "type": "string"
+                                                                      },
+                                                                      {
+                                                                                "type": "null"
+                                                                      }
+                                                            ],
+                                                            "title": "Education",
+                                                            "description": "Education of the user"
+                                                  },
+                                                  "religion": {
+                                                            "anyOf": [
+                                                                      {
+                                                                                "type": "string"
+                                                                      },
+                                                                      {
+                                                                                "type": "null"
+                                                                      }
+                                                            ],
+                                                            "title": "Religion",
+                                                            "description": "Religion of the user"
+                                                  },
+                                                  "caste": {
+                                                            "anyOf": [
+                                                                      {
+                                                                                "type": "string"
+                                                                      },
+                                                                      {
+                                                                                "type": "null"
+                                                                      }
+                                                            ],
+                                                            "title": "Caste",
+                                                            "description": "Caste of the user"
+                                                  },
+                                                  "nationality": {
+                                                            "anyOf": [
+                                                                      {
+                                                                                "type": "string"
+                                                                      },
+                                                                      {
+                                                                                "type": "null"
+                                                                      }
+                                                            ],
+                                                            "title": "Nationality",
+                                                            "description": "Nationality of the user"
+                                                  }
+                                        },
+                                        "type": "object",
+                                        "title": "UserProfile"
+                              },
+                              "UserProfileResponse": {
+                                        "properties": {
+                                                  "profile": {
+                                                            "anyOf": [
+                                                                      {
+                                                                                "$ref": "#/components/schemas/UserProfile"
+                                                                      },
+                                                                      {
+                                                                                "type": "null"
+                                                                      }
+                                                            ]
+                                                  }
+                                        },
+                                        "type": "object",
+                                        "title": "UserProfileResponse"
+                              },
+                              "UserStatus": {
+                                        "type": "integer",
+                                        "enum": [
+                                                  0,
+                                                  1,
+                                                  2
+                                        ],
+                                        "title": "UserStatus"
+                              },
+                              "ValidationError": {
+                                        "properties": {
+                                                  "loc": {
+                                                            "items": {
+                                                                      "anyOf": [
+                                                                                {
+                                                                                          "type": "string"
+                                                                                },
+                                                                                {
+                                                                                          "type": "integer"
+                                                                                }
+                                                                      ]
+                                                            },
+                                                            "type": "array",
+                                                            "title": "Location"
+                                                  },
+                                                  "msg": {
+                                                            "type": "string",
+                                                            "title": "Message"
+                                                  },
+                                                  "type": {
+                                                            "type": "string",
+                                                            "title": "Error Type"
+                                                  }
+                                        },
+                                        "type": "object",
+                                        "required": [
+                                                  "loc",
+                                                  "msg",
+                                                  "type"
+                                        ],
+                                        "title": "ValidationError"
+                              }
+                    },
+                    "securitySchemes": {
+                              "HTTPBearer": {
+                                        "type": "http",
+                                        "scheme": "bearer"
+                              }
+                    }
+          }
+}

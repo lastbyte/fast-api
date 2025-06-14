@@ -1,13 +1,14 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 from typing import List
 from sqlmodel import Session, select
 from sqlalchemy import func
 from app.common.logger import Logger
+from app.common.utils import generate_random_string
 from app.connectors.cache.redis import get_redis_connector
-from app.exceptions.database_exceptions import EntityExists
-from app.models.requests.schema import CreateUserRequest, LoginRequest
-from app.models.db.schema import User
-from app.common.constants import UserStatus
+from app.exceptions.database_exceptions import DbException
+from app.models.requests.schema import CreateUserRequest, LoginRequest, UpdatePasswordRequest
+from app.models.db.schema import User, UserSignUpVerification
+from app.common.constants import UserSignUpVerificationStatus, UserStatus
 from app.services import user_role_service
 
 logger = Logger(__name__)
@@ -44,6 +45,24 @@ async def login_user(db: Session, login_request : LoginRequest):
         raise Exception("Error occurred while fetching user from db")
     return None
 
+
+async def update_password(db: Session, user_id: int, update_password_request: UpdatePasswordRequest) -> User:
+    try:
+        user = await get_user(db=db, user_id=user_id)
+        if not user:
+            raise Exception(f"User with id {user_id} not found")
+        
+        if update_password_request.existing_password != user.password:
+            raise Exception("Existing passwords does not match")
+        
+        user.password = update_password_request.new_password
+        db.commit()
+        db.refresh(user)
+        return user
+    except Exception:
+        raise DbException("Exception occurred while updating password")
+
+
 async def create_user(db: Session, create_user_request: CreateUserRequest) -> User:
     """
     Create a new user from the request data
@@ -56,14 +75,14 @@ async def create_user(db: Session, create_user_request: CreateUserRequest) -> Us
         User: Created user object
         
     Raises:
-        EntityExists: If user with same email already exists
+        DbException: If user with same email already exists
         ValueError: If role_id is invalid
     """
     try:
         # Check if user already exists
         existing_user = await get_user_by_email(db, create_user_request.email)
         if existing_user:
-            raise EntityExists(f"User with email {create_user_request.email} already exists")
+            raise DbException(f"User with email {create_user_request.email} already exists")
 
         # Create user object from request data
         user_data = create_user_request.model_dump()
@@ -77,13 +96,21 @@ async def create_user(db: Session, create_user_request: CreateUserRequest) -> Us
         
         # Save to database
         db.add(user)
+
+        user_sign_up_verification = UserSignUpVerification(
+            user_id=user.id,
+            verification_code=generate_random_string(length=32),
+            expires_at=datetime.now() + timedelta(minutes=10)
+        )
+
+        db.add(user_sign_up_verification)
         db.commit()
-        db.refresh(user)
+        db.refresh(user_sign_up_verification)
         
         logger.info(f"Successfully created user with email: {user.email}")
         return user
         
-    except EntityExists as e:
+    except DbException as e:
         logger.error(str(e))
         raise e
     except Exception as ex:
@@ -105,7 +132,7 @@ async def list_users(db: Session, q: str, sort_dir : str , sort_column : str , p
 
         return user_count, users
     except Exception:
-        raise Exception("Exception occurred while fetching user list from database")
+        raise DbException("Exception occurred while fetching user list from database")
 
 
 async def logout(token : str):
@@ -115,7 +142,7 @@ async def logout(token : str):
         return True
     except Exception as ex:
         logger.error(f"error occurred while logging out user : {str(ex)}")
-        return False
+        raise DbException(f"error occurred while logging out user : {str(ex)}")
     
 
 async def update_user_role(db: Session, user_id: int, role_id: int):
@@ -134,4 +161,38 @@ async def update_user_role(db: Session, user_id: int, role_id: int):
         db.refresh(user)
         return user
     except Exception:
-        raise Exception("Exception occurred while updating user role")
+        raise DbException("Exception occurred while updating user role")
+    
+
+async def verify_user_sign_up(db: Session, user_id: int, verification_code: str) -> User:
+    try:
+        user_sign_up_verification = db.exec(select(UserSignUpVerification).where(UserSignUpVerification.user_id == user_id and UserSignUpVerification.verification_code == verification_code)).one()
+        user = db.exec(select(User).where(User.id == user_id)).one()
+
+        if not user:
+            raise Exception(f"User with id {user_id} not found")
+        
+        if user.status == UserStatus.VERIFIED:
+            raise Exception(f"User with id {user_id} already verified")
+        
+        if not user_sign_up_verification:
+            raise Exception(f"User with id {user_id} not found")
+        
+        if user_sign_up_verification.status == UserSignUpVerificationStatus.VERIFIED:
+            raise Exception(f"User with id {user_id} already verified")
+        
+        if user_sign_up_verification.status == UserSignUpVerificationStatus.EXPIRED:
+            raise Exception(f"User with id {user_id} verification code expired")
+        
+        if user_sign_up_verification.expires_at < datetime.now():
+            user_sign_up_verification.status = UserSignUpVerificationStatus.EXPIRED
+            db.commit()
+            db.refresh(user_sign_up_verification)
+            raise Exception(f"User with id {user_id} verification code expired")
+        
+        user_sign_up_verification.status = UserSignUpVerificationStatus.VERIFIED
+        db.commit()
+        db.refresh(user_sign_up_verification)
+        return user
+    except Exception:
+        raise DbException("Exception occurred while verifying user sign up")
