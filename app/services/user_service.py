@@ -91,7 +91,7 @@ async def create_user(db: Session, create_user_request: CreateUserRequest) -> Us
         raise ex
 
 
-async def list_users(db: Session, q: str, sort_dir : str, sort_column : str, page_num: int, page_size: int):
+async def list_users(db: Session, q: str, sort_dir : str , sort_column : str , page_num: int = 1, page_size: int = 10):
     try:
         offset = (page_num-1) * page_size
         limit = page_size
@@ -99,8 +99,8 @@ async def list_users(db: Session, q: str, sort_dir : str, sort_column : str, pag
         user_count_result = db.exec(select(func.count()).select_from(User))
         user_count = user_count_result.one()
 
-        users_result = db.exec(select(User).offset(offset).limit(limit))
-        users = [user.model_dump() for user in users_result.all()]
+        users_result = db.exec(select(User).offset(offset).limit(limit).order_by(sort_column)).all()
+        users = [user.model_dump() for user in users_result]
 
         return user_count, users
     except Exception:

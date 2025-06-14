@@ -51,7 +51,7 @@ async def logout(token = Depends(get_token)):
 
 @router.get("/search", description="Search users by name for email")
 @authenticate
-async def search(db: SessionDep,
+async def search_users(db: SessionDep,
                  request : Request,
                  token = Depends(verify_token),
                  q: str | None = "",
@@ -77,7 +77,7 @@ async def search(db: SessionDep,
 
 @router.get("/profile/me")
 @authenticate
-async def search(db: SessionDep,request: Request, token = Depends(verify_token)):
+async def get_self_user_profile(db: SessionDep,request: Request, token = Depends(verify_token)):
     try:
         user_data = await user_service.get_user(db=db, user_id=request.state.user["id"])
         return JSONResponse(
@@ -90,7 +90,7 @@ async def search(db: SessionDep,request: Request, token = Depends(verify_token))
 
 @router.get("/profile/{user_id}")
 @authenticate
-async def search(db: SessionDep,user_id: int, token = Depends(verify_token)):
+async def get_user_profile(db: SessionDep,user_id: int, token = Depends(verify_token)):
     try:
         user_data = await user_service.get_user(db=db, user_id=user_id)
         return JSONResponse(
