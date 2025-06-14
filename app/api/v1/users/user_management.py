@@ -2,12 +2,12 @@
 from fastapi import APIRouter, Depends, Request
 from fastapi.responses import JSONResponse
 
-from app.common.auth.token import authenticate, create_auth_token, verify_token
-from app.connectors.db.sqlite import SessionDep
+from app.common.auth.token import authenticate, create_auth_token, get_token, verify_token
+from app.connectors.db.postgres import SessionDep
 from app.exceptions.database_exceptions import EntityExists
 from app.models.requests.create_user_request import CreateUserRequest, LoginRequest
 from app.models.responses.users import InvalidUserRequest
-from app.models.user import User
+from app.models.db.user import User
 from app.services import user_service
 from app.common.logger import Logger
 
@@ -26,7 +26,7 @@ async def sign_up(create_user_request: CreateUserRequest,db: SessionDep):
     except EntityExists:
         logger.error(
             f"user account already exists for the email id {create_user_request.email}")
-        return JSONResponse(content=InvalidUserRequest(errors=f'user account already exists for the email id {create_user_request.email}'), status_code=400)
+        return JSONResponse(content={"errors" : f'user account already exists for the email id {create_user_request.email}'}, status_code=400)
 
     except Exception as ex:
         logger.error(f"error occurred while adding user {str(ex)}")
@@ -37,6 +37,14 @@ async def login(login_request: LoginRequest, db: SessionDep):
         user = await user_service.login_user(db=db,login_request=login_request)
         token = create_auth_token(user=user)
         return JSONResponse(content={"token": token}, status_code=200)
+    except Exception as ex:
+        logger.error(f"error occurred while adding user :  {str(ex)}")
+
+@router.get("/logout", description="invalidates the jwt token")
+async def logout(token = Depends(get_token)):
+    try:
+        is_successful = await user_service.logout(token=token)
+        return JSONResponse(content={"success": is_successful}, status_code=200)
     except Exception as ex:
         logger.error(f"error occurred while adding user :  {str(ex)}")
 

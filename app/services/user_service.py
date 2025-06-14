@@ -1,11 +1,14 @@
+from datetime import datetime
+import time
 from typing import List
 from pydantic import BaseModel
 from sqlmodel import Session, select
 from sqlalchemy import func
 from app.common.logger import Logger
+from app.connectors.cache.redis import get_redis_connector
 from app.exceptions.database_exceptions import EntityExists
 from app.models.requests.create_user_request import CreateUserRequest, LoginRequest
-from app.models.user import User
+from app.models.db.user import User
 
 logger = Logger(__name__)
 
@@ -26,7 +29,7 @@ async def get_user(db: Session, user_id : int) -> User :
 
 async def get_user_by_email(db: Session, email: str): 
     try:
-        users = db.get(select(User).where(User.email == email)).all()
+        users = db.exec(select(User).where(User.email == email)).all()
         return users[0]
     except Exception:
         logger.error("Error occurred while fetching user from db")
@@ -44,12 +47,11 @@ async def login_user(db: Session, login_request : LoginRequest):
 async def create_user(db: Session, create_user_request: CreateUserRequest) -> User:
     try:
         existing_user = await get_user_by_email(db, create_user_request.email)
-
         if existing_user :
             raise EntityExists();
 
         user = User(first_name=create_user_request.first_name, last_name=create_user_request.last_name,
-                    email=create_user_request.email, password=create_user_request.password)
+                    email=create_user_request.email, password=create_user_request.password, created_at=datetime.now(), updated_at=datetime.now(), create_by=0)
         db.add(user)
         db.commit()
         db.refresh(user)
@@ -64,14 +66,23 @@ async def list_users(db: Session, q: str, sort_dir : str, sort_column : str, pag
         offset = (page_num-1) * page_size
         limit = page_size
 
-
         user_count_result = db.exec(select(func.count()).select_from(User))
         user_count = user_count_result.one()
 
         users_result = db.exec(select(User).offset(offset).limit(limit))
-        users = [user.model_dump() for user in  users_result.all()]
+        users = [user.model_dump() for user in users_result.all()]
 
         return user_count, users
     except Exception as ex:
         logger.error("Exception occurred while fetching user list from database")
         logger.error(ex)
+
+
+async def logout(token : str):
+    try:
+        redis_connector = get_redis_connector()
+        await redis_connector.write(token, True, ttl=60 * 60 * 24 * 14)
+        return True
+    except Exception as ex:
+        logger.error(f"error occurred while logging out user : {str(ex)}")
+        return False

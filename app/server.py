@@ -3,18 +3,16 @@ from app.api.main import add_api_routes
 from app.common.constants import APP_NAME, APP_DESCRIPTION
 from app.common.logger import Logger
 from app.connectors.db.sqlite import create_db_and_tables
+from app.connectors.db.postgres import create_db_and_tables as pg_create_db_and_tables
 from app.middlewares.rate_limiter import RateLimiterMiddleware
+from app.common.configuration import config
 
 logger = Logger(__name__);
 
 def create_app():
     try:
         app = FastAPI(title=APP_NAME, description=APP_DESCRIPTION)
-        configure_app(app)
-        @app.on_event("startup")
-        def on_startup():
-            create_db_and_tables()
-        return app
+        return configure_app(app)
     except Exception as e:
         logger.error(f"Error creating app: {e}")
         raise e
@@ -22,11 +20,21 @@ def create_app():
 
 
 def configure_app(app: FastAPI):
+    configure_database(app)
     configure_routers(app)
     configure_middlewares(app)
     return app
 
 
+def configure_database(app : FastAPI):
+    @app.on_event("startup")
+    def on_startup():
+        if config.APP_ENV == 'demo':
+            create_db_and_tables()
+        else:
+            pg_create_db_and_tables()
+    return app
+    
 def configure_routers(app: FastAPI):
     try:
         add_api_routes(app)
@@ -39,5 +47,5 @@ def configure_routers(app: FastAPI):
 def configure_middlewares(app: FastAPI):
 
     # add the rate limiter middleware
-    # app.add_middleware(RateLimiterMiddleware, max_requests=20, time_window=60)
+    app.add_middleware(RateLimiterMiddleware, max_requests=20, time_window=60)
     return app
