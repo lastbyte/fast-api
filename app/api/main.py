@@ -25,6 +25,8 @@ def add_api_routes_from_directory(app: FastAPI, prefix: str):
         if not api_prefix.startswith("/"):
             api_prefix = prefix + "/" + api_prefix
 
+        api_prefix = api_prefix.replace("_", "-")
+
         for file in files:
             if file.endswith(".py") and file != "__init__.py" and file != "main.py":
                 module_name = os.path.splitext(file)[0]

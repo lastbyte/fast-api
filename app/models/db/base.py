@@ -8,6 +8,7 @@ class BaseModel(SQLModel, table=False):
         arbitrary_types_allowed=True
     )
     
+    id: int | None = Field(default=None, primary_key=True)
     created_at: datetime = Field(default=None, nullable=False)
     updated_at: datetime = Field(default=datetime.now(), nullable=False)
 

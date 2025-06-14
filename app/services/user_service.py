@@ -7,8 +7,9 @@ from sqlalchemy import func
 from app.common.logger import Logger
 from app.connectors.cache.redis import get_redis_connector
 from app.exceptions.database_exceptions import EntityExists
-from app.models.requests.create_user_request import CreateUserRequest, LoginRequest
+from app.models.requests.schema import CreateUserRequest, LoginRequest
 from app.models.db.user import User
+from app.common.constants import UserStatus
 
 logger = Logger(__name__)
 
@@ -45,19 +46,50 @@ async def login_user(db: Session, login_request : LoginRequest):
     return None
 
 async def create_user(db: Session, create_user_request: CreateUserRequest) -> User:
+    """
+    Create a new user from the request data
+    
+    Args:
+        db (Session): Database session
+        create_user_request (CreateUserRequest): User creation request data
+        
+    Returns:
+        User: Created user object
+        
+    Raises:
+        EntityExists: If user with same email already exists
+        ValueError: If role_id is invalid
+    """
     try:
+        # Check if user already exists
         existing_user = await get_user_by_email(db, create_user_request.email)
-        if existing_user :
-            raise EntityExists();
+        if existing_user:
+            raise EntityExists(f"User with email {create_user_request.email} already exists")
 
-        user = User(first_name=create_user_request.first_name, last_name=create_user_request.last_name,
-                    email=create_user_request.email, password=create_user_request.password, created_at=datetime.now(), updated_at=datetime.now(), create_by=0)
+        # Create user object from request data
+        user_data = create_user_request.model_dump()
+        user = User(
+            **user_data,
+            status=UserStatus.CREATED,
+            created_at=datetime.now(),
+            updated_at=datetime.now(),
+            create_by=0  # TODO: Replace with actual user ID when implementing authentication
+        )
+        
+        # Save to database
         db.add(user)
         db.commit()
         db.refresh(user)
+        
+        logger.info(f"Successfully created user with email: {user.email}")
         return user
+        
+    except EntityExists as e:
+        logger.error(str(e))
+        raise e
     except Exception as ex:
-        logger.error("Exception occurred while creating user")
+        logger.error(f"Error creating user: {str(ex)}")
+        db.rollback()
         raise ex
 
 

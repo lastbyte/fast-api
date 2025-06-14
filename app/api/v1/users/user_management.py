@@ -5,7 +5,7 @@ from fastapi.responses import JSONResponse
 from app.common.auth.token import authenticate, create_auth_token, get_token, verify_token
 from app.connectors.db.postgres import SessionDep
 from app.exceptions.database_exceptions import EntityExists
-from app.models.requests.create_user_request import CreateUserRequest, LoginRequest
+from app.models.requests.schema import CreateUserRequest, LoginRequest
 from app.models.responses.users import InvalidUserRequest
 from app.models.db.user import User
 from app.services import user_service
@@ -80,6 +80,19 @@ async def search(db: SessionDep,
 async def search(db: SessionDep,request: Request, token = Depends(verify_token)):
     try:
         user_data = await user_service.get_user(db=db, user_id=request.state.user["id"])
+        return JSONResponse(
+            content=user_data.model_dump(),
+            status_code=200
+        )
+    except Exception as ex:
+        logger.error(f"Error occurred while fetching user")
+
+
+@router.get("/profile/{user_id}")
+@authenticate
+async def search(db: SessionDep,user_id: int, token = Depends(verify_token)):
+    try:
+        user_data = await user_service.get_user(db=db, user_id=user_id)
         return JSONResponse(
             content=user_data.model_dump(),
             status_code=200
